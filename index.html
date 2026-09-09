@@ -1,87 +1,424 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Zhuofan Zhan — Data Science Portfolio" />
   <title>Zhuofan Zhan | Data Science Portfolio</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 960px;
-      margin: 50px auto;
-      line-height: 1.7;
-      color: #333;
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --ink:#172033;
+      --muted:#667085;
+      --line:#e7eaf0;
+      --accent:#274c77;
+      --accent2:#4f6f8f;
+      --soft:#eaf0f6;
+      --max:1120px;
+      --radius:22px;
     }
-    h1 {
-      color: #2c3e50;
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      line-height:1.65;
     }
-    h2 {
-      margin-top: 40px;
-      padding-bottom: 6px;
-      border-bottom: 2px solid #eee;
-      color: #34495e;
+
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(var(--max), calc(100% - 40px)); margin:0 auto}
+
+    nav{
+      position:sticky; top:0; z-index:20;
+      background:rgba(246,247,251,.92);
+      backdrop-filter: blur(14px);
+      border-bottom:1px solid rgba(231,234,240,.9);
     }
-    ul {
-      margin-left: 20px;
+    .nav-inner{
+      height:72px; display:flex; align-items:center; justify-content:space-between; gap:24px;
     }
-    .section-note {
-      color: #555;
-      font-size: 0.95em;
+    .brand{font-weight:800; letter-spacing:-.02em}
+    .nav-links{display:flex; gap:24px; font-size:14px; color:var(--muted)}
+    .nav-links a:hover{color:var(--ink)}
+
+    .hero{
+      padding:96px 0 72px;
+    }
+    .eyebrow{
+      display:inline-block;
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--accent);
+      margin-bottom:18px;
+    }
+    h1{
+      font-size:clamp(48px,8vw,84px);
+      line-height:1.02;
+      letter-spacing:-.055em;
+      margin:0 0 22px;
+      max-width:900px;
+    }
+    .hero p{
+      font-size:clamp(18px,2.2vw,23px);
+      max-width:760px;
+      color:var(--muted);
+      margin:0 0 34px;
+    }
+    .buttons{display:flex; flex-wrap:wrap; gap:12px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 18px; border-radius:999px; font-weight:700; font-size:14px;
+      border:1px solid var(--line); background:var(--card);
+    }
+    .btn.primary{background:var(--ink); color:#fff; border-color:var(--ink)}
+    .btn:hover{transform:translateY(-1px)}
+
+    section{padding:76px 0}
+    .section-head{margin-bottom:32px}
+    .section-kicker{font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--accent)}
+    h2{font-size:clamp(32px,5vw,50px); line-height:1.1; letter-spacing:-.04em; margin:8px 0 12px}
+    .section-head p{color:var(--muted); max-width:720px; margin:0}
+
+    .about-grid{
+      display:grid; grid-template-columns:1.25fr .75fr; gap:24px;
+    }
+    .panel{
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+      padding:30px;
+    }
+    .panel h3{margin:0 0 10px; font-size:20px}
+    .panel p{margin:0;color:var(--muted)}
+    .facts{display:grid;gap:16px}
+    .fact{padding-bottom:16px;border-bottom:1px solid var(--line)}
+    .fact:last-child{border-bottom:0;padding-bottom:0}
+    .fact span{display:block;color:var(--muted);font-size:13px;margin-bottom:3px}
+    .fact strong{font-size:15px}
+
+    .project-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+    .project-card{
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+      padding:26px; display:flex; flex-direction:column; min-height:100%;
+    }
+    .project-number{
+      width:38px;height:38px;border-radius:12px;background:var(--soft);
+      display:grid;place-items:center;font-weight:800;color:var(--accent);margin-bottom:24px
+    }
+    .project-card h3{font-size:22px;line-height:1.25;margin:0 0 10px;letter-spacing:-.02em}
+    .project-card p{color:var(--muted);font-size:15px;margin:0 0 18px}
+    .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+    .tag{font-size:12px;font-weight:700;padding:6px 9px;border-radius:999px;background:var(--soft);color:var(--accent)}
+
+    .detail{
+      margin-top:22px;padding-top:18px;border-top:1px solid var(--line)
+    }
+    .detail h4{font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin:0 0 8px}
+    .detail ul{padding-left:18px;margin:0;color:var(--muted);font-size:14px}
+    .detail li+li{margin-top:6px}
+
+    .skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .skill-box{
+      background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px
+    }
+    .skill-box h3{font-size:16px;margin:0 0 10px}
+    .skill-box p{font-size:14px;color:var(--muted);margin:0}
+
+    .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .principle{
+      padding:26px;border-radius:18px;background:var(--ink);color:white;
+    }
+    .principle strong{font-size:19px;display:block;margin-bottom:8px}
+    .principle span{color:#cbd5e1;font-size:14px}
+
+    .contact{
+      background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+      padding:42px;display:flex;align-items:center;justify-content:space-between;gap:30px
+    }
+    .contact h2{margin:0 0 8px;font-size:36px}
+    .contact p{margin:0;color:var(--muted)}
+
+    footer{padding:36px 0 50px;color:var(--muted);font-size:13px}
+
+    @media (max-width:900px){
+      .about-grid,.project-grid,.skills-grid,.principles{grid-template-columns:1fr 1fr}
+      .project-grid .project-card:last-child{grid-column:1/-1}
+    }
+    @media (max-width:650px){
+      .wrap{width:min(var(--max), calc(100% - 28px))}
+      .nav-links{display:none}
+      .hero{padding:70px 0 50px}
+      section{padding:56px 0}
+      .about-grid,.project-grid,.skills-grid,.principles{grid-template-columns:1fr}
+      .project-grid .project-card:last-child{grid-column:auto}
+      .contact{align-items:flex-start;flex-direction:column;padding:28px}
     }
   </style>
 </head>
-
 <body>
 
-  <h1>Zhuofan Zhan</h1>
-  <p>
-    Undergraduate student majoring in <strong>Data Science / Statistics</strong>, with a strong
-    interest in applying statistical modeling and machine learning to real-world problems.
-    This page serves as a personal academic and technical portfolio.
-  </p>
+<nav>
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">Zhuofan Zhan</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
 
-  <h2>Education</h2>
-  <p>
-    <strong>University of Arizona</strong><br>
-    Bachelor of Science (B.S.) in Data Science / Statistics
-  </p>
-  <p class="section-note">
-    Relevant coursework includes probability theory, statistical inference, linear algebra,
-    regression modeling, data analysis, and introductory machine learning.
-  </p>
+<main id="top">
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Data Science Portfolio</div>
+      <h1>Turning data into clear, useful stories.</h1>
+      <p>
+        I’m Zhuofan Zhan, an undergraduate Data Science student at the University of Arizona.
+        I use statistical analysis, machine learning, and visualization to explore real-world
+        questions in health, behavior, economics, and human-centered applications.
+      </p>
+      <div class="buttons">
+        <a class="btn primary" href="#projects">View Selected Projects</a>
+        <a class="btn" href="https://github.com/isabella20522" target="_blank" rel="noopener">GitHub Profile ↗</a>
+      </div>
+    </div>
+  </header>
 
-  <h2>Technical Skills</h2>
-  <ul>
-    <li><strong>Programming:</strong> Python, R, SQL</li>
-    <li><strong>Data Analysis:</strong> Pandas, NumPy, tidyverse, data cleaning & visualization</li>
-    <li><strong>Statistics:</strong> Regression analysis, hypothesis testing, probability models</li>
-    <li><strong>Machine Learning:</strong> Basic supervised models, model evaluation concepts</li>
-    <li><strong>Tools:</strong> Git/GitHub, Jupyter Notebook, RStudio</li>
-  </ul>
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">About</div>
+        <h2>Analytical work with a human focus.</h2>
+        <p>
+          My goal is to build analyses that are technically sound, easy to explain, and useful
+          to people making real decisions. This portfolio highlights selected work across
+          statistical analysis, predictive modeling, and data-driven product design.
+        </p>
+      </div>
 
-  <h2>Projects</h2>
-  <ul>
-    <li>
-      <strong>Statistical Computing & R Programming Projects</strong><br>
-      Implemented Monte Carlo simulation, numerical integration, and optimization techniques
-      using R to solve computational statistics problems.
-    </li>
-    <li>
-      <strong>Data Wrangling and Exploratory Data Analysis</strong><br>
-      Conducted data inspection, cleaning, and visualization on real-world datasets to
-      extract meaningful insights.
-    </li>
-  </ul>
+      <div class="about-grid">
+        <div class="panel">
+          <h3>About Me</h3>
+          <p>
+            I am interested in how quantitative methods can help us understand complex problems
+            involving people, behavior, health, and policy. In my work, I try to connect careful
+            data analysis with clear communication so that technical results remain understandable
+            to both technical and non-technical audiences.
+          </p>
+        </div>
 
-  <h2>Contact</h2>
-  <p>
-    Email: <a href="mailto:2059361310@qq.com">2059361310@qq.com</a>
-  </p>
-  <p>
-    GitHub:
-    <a href="https://github.com/isabella20522" target="_blank">
-      https://github.com/isabella20522
-    </a>
-  </p>
+        <div class="panel facts">
+          <div class="fact">
+            <span>Current focus</span>
+            <strong>Data Science & Applied Statistics</strong>
+          </div>
+          <div class="fact">
+            <span>Portfolio audience</span>
+            <strong>Faculty, employers & graduate programs</strong>
+          </div>
+          <div class="fact">
+            <span>What I value</span>
+            <strong>Clear, explainable & responsible analysis</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Selected Projects</div>
+        <h2>Three ways I work with data.</h2>
+        <p>
+          These projects were selected to show complementary strengths: statistical reasoning,
+          predictive modeling, visualization, and the design of data-driven applications.
+        </p>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-number">01</div>
+          <h3>Sleep, Stress & Lifestyle Health Analysis</h3>
+          <p>
+            An observational data analysis exploring how sleep duration, sleep quality,
+            sleep disorders, physical activity, and stress are related.
+          </p>
+
+          <div class="detail">
+            <h4>What I did</h4>
+            <ul>
+              <li>Conducted exploratory and nonparametric statistical analysis.</li>
+              <li>Used group comparisons, rank-based association methods, and visualization.</li>
+              <li>Interpreted results as associations rather than causal effects.</li>
+            </ul>
+          </div>
+
+          <div class="detail">
+            <h4>Key takeaway</h4>
+            <ul>
+              <li>Shorter sleep and sleep disorders were associated with higher stress.</li>
+              <li>Sleep duration was strongly related to sleep quality.</li>
+            </ul>
+          </div>
+
+          <div class="tags">
+            <span class="tag">Nonparametric Statistics</span>
+            <span class="tag">EDA</span>
+            <span class="tag">Visualization</span>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-number">02</div>
+          <h3>Predicting Customer Departure Before It Happens</h3>
+          <p>
+            A supervised machine-learning project using the UCI Iranian Churn Dataset
+            to predict whether telecommunications customers are likely to leave.
+          </p>
+
+          <div class="detail">
+            <h4>What I did</h4>
+            <ul>
+              <li>Worked with 3,150 customer records and 13 predictors.</li>
+              <li>Compared Logistic Regression, KNN, and Random Forest.</li>
+              <li>Used 5-fold cross-validation and multiple classification metrics.</li>
+            </ul>
+          </div>
+
+          <div class="detail">
+            <h4>Key takeaway</h4>
+            <ul>
+              <li>Random Forest produced the strongest overall performance.</li>
+              <li>Best reported accuracy: 95.4%.</li>
+            </ul>
+          </div>
+
+          <div class="tags">
+            <span class="tag">Machine Learning</span>
+            <span class="tag">Classification</span>
+            <span class="tag">Cross-Validation</span>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-number">03</div>
+          <h3>Brain–Body AI Training Platform</h3>
+          <p>
+            A human-centered platform concept combining physical exercise, cognitive tasks,
+            and multimodal data to support personalized training and progress tracking.
+          </p>
+
+          <div class="detail">
+            <h4>What I worked on</h4>
+            <ul>
+              <li>Integrated motion, heart-rate, and cognitive-task data concepts.</li>
+              <li>Used modeling ideas including Random Forest and LSTM.</li>
+              <li>Designed data-driven feedback, progress reports, and visual dashboards.</li>
+            </ul>
+          </div>
+
+          <div class="detail">
+            <h4>Why it matters</h4>
+            <ul>
+              <li>Connects analysis with an end-user product experience.</li>
+              <li>Shows how model outputs can be translated into actionable feedback.</li>
+            </ul>
+          </div>
+
+          <div class="tags">
+            <span class="tag">AI Product</span>
+            <span class="tag">Random Forest</span>
+            <span class="tag">LSTM</span>
+            <span class="tag">Dashboard Design</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Skills</div>
+        <h2>Methods & tools.</h2>
+        <p>
+          I use a combination of programming, statistical reasoning, and communication tools
+          to move from raw data to interpretable results.
+        </p>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-box">
+          <h3>Programming</h3>
+          <p>Python · R · SQL · Git · GitHub</p>
+        </div>
+        <div class="skill-box">
+          <h3>Statistics</h3>
+          <p>Statistical inference · Nonparametric methods · Regression · Time series</p>
+        </div>
+        <div class="skill-box">
+          <h3>Machine Learning</h3>
+          <p>Classification · Model comparison · Cross-validation · Tree-based methods</p>
+        </div>
+        <div class="skill-box">
+          <h3>Communication</h3>
+          <p>Data visualization · Technical writing · Presentations · Explainable results</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-kicker">Portfolio Principles</div>
+        <h2>How I want my work to be read.</h2>
+      </div>
+      <div class="principles">
+        <div class="principle">
+          <strong>Clear</strong>
+          <span>Lead with the question, not the code.</span>
+        </div>
+        <div class="principle">
+          <strong>Explainable</strong>
+          <span>Connect methods to the reason they were chosen.</span>
+        </div>
+        <div class="principle">
+          <strong>Useful</strong>
+          <span>Translate results into conclusions a reader can act on.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact">
+        <div>
+          <div class="section-kicker">Contact</div>
+          <h2>Thanks for visiting.</h2>
+          <p>Explore my GitHub for project files, code, and future updates.</p>
+        </div>
+        <a class="btn primary" href="https://github.com/isabella20522" target="_blank" rel="noopener">
+          Visit GitHub ↗
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    © 2026 Zhuofan Zhan · Data Science Portfolio
+  </div>
+</footer>
 
 </body>
 </html>
